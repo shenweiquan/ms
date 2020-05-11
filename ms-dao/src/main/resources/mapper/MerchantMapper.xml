@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swq.ms.dao.merchant.MerchantMapper">
+
+    <resultMap id="MerchantMap" type="Merchant">
+        <id property="id" column="id"/>
+        <result property="merchantname" column="merchant_name"/>
+        <result property="merchantaccount" column="merchant_account" />
+        <!--不需要密码-->
+    </resultMap>
+
+    <insert id="insertMerchant" parameterType="Merchant" >
+        insert into merchant(merchant_name,merchant_account,merchant_password)
+        values (#{merchantname},#{merchantaccount},#{merchantpassword})
+    </insert>
+
+    <select id="selectMerchantById" parameterType="Long" resultMap="MerchantMap">
+        select * from merchant where id = #{id}
+    </select>
+
+
+    <select id="selectAllMerchant" resultMap="MerchantMap">
+        select * from merchant;
+    </select>
+
+    <update id="updateMerchant" parameterType="Merchant">
+        update merchant
+        <trim prefix="set" suffixOverrides=",">
+
+          <if test="merchantname != null">
+              merchant_name = #{merchantname},
+          </if>
+          <if test=" merchantaccount !=  null ">
+              merchant_account = #{merchantaccount},
+          </if>
+          <if test=" merchantpassword !=  null ">
+                merchant_password = #{merchantpassword},
+          </if>
+
+        </trim>
+        where  id = #{id}
+
+    </update>
+
+    <delete id="deleteMerchant" parameterType="Long">
+        delete from merchant where id = #{id}
+    </delete>
+
+</mapper>
